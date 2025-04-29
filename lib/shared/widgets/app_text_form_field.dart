@@ -22,7 +22,7 @@ class AppTextFormField extends StatelessWidget {
     return TextFormField(
       decoration: InputDecoration(
         border: OutlineInputBorder(),
-        label: Text(label),
+        label: SelectableText(label),
       ),
       onSaved: onSaved,
       keyboardType: keyboardType,

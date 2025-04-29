@@ -19,33 +19,61 @@ class SettingsScreen extends StatelessWidget {
             child: SliverToBoxAdapter(
               child: Column(
                 children: [
-                  controller.serverStarted ?
-                    Column(
-                      children: [
-                        QrImageView(
-                          data: controller.ipAddress,
-                          size: 200,
-                          foregroundColor: Theme.of(context).colorScheme.primary,
+                  controller.serverStarted
+                      ? Column(
+                          children: [
+                            QrImageView(
+                              data: controller.ipAddress,
+                              size: 200,
+                              foregroundColor:
+                                  Theme.of(context).colorScheme.primary,
+                            ),
+                            SizedBox(height: 5),
+                            Text(controller.ipAddress),
+                            SizedBox(height: 5),
+                            ElevatedButton(
+                              onPressed: controller.stopServer,
+                              child: SelectableText(
+                                'ايقاف السيرفر',
+                                style: TextTheme.of(context)
+                                    .bodyMedium
+                                    ?.copyWith(color: Colors.white),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red),
+                            )
+                          ],
+                        )
+                      : ElevatedButton(
+                          onPressed: controller.startServer,
+                          child: SelectableText(
+                            'تشغيل السيرفر',
+                            style: TextTheme.of(context)
+                                .bodyMedium
+                                ?.copyWith(color: Colors.white),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green),
                         ),
-                        SizedBox(height: 5),
-                        Text(controller.ipAddress),
-                        SizedBox(height: 5),
-                        ElevatedButton(onPressed: controller.stopServer, child: Text('ايقاف السيرفر', style: TextTheme.of(context).bodyMedium?.copyWith(color: Colors.white),),style: ElevatedButton.styleFrom(backgroundColor: Colors.red), )
-                      ],
-                    ) : ElevatedButton(onPressed: controller.startServer, child: Text('تشغيل السيرفر', style: TextTheme.of(context).bodyMedium?.copyWith(color: Colors.white),),style: ElevatedButton.styleFrom(backgroundColor: Colors.green), ),
                   SizedBox(height: 10),
-                  !controller.connectedToServer ?
-                  ElevatedButton(
-                    onPressed: controller.connectToServer,
-                    child: Text('اتصال بجهاز آخر'),
-                  ) : Container(
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    padding: EdgeInsets.all(10),
-                    child: Text('تم الاتصال بجهاز', style: TextTheme.of(context).bodyMedium?.copyWith(color: Colors.white),),
-                  ),
+                  !controller.connectedToServer
+                      ? ElevatedButton(
+                          onPressed: controller.connectToServer,
+                          child: SelectableText('اتصال بجهاز آخر'),
+                        )
+                      : Container(
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          padding: EdgeInsets.all(10),
+                          child: SelectableText(
+                            'تم الاتصال بجهاز',
+                            style: TextTheme.of(context)
+                                .bodyMedium
+                                ?.copyWith(color: Colors.white),
+                          ),
+                        ),
                 ],
               ),
             ),

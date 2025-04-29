@@ -42,15 +42,18 @@ class PocketbaseController extends GetxController {
 
   final pocketbase = PocketBase('');
 
-  void _loadIpServer() async{
+  void _loadIpServer() async {
     final storage = LocalStorageHelper.storage;
 
-    pocketbase.baseURL = await storage.read(key: LocalStorageHelper.keys.ipServer) ?? '';
-    
-    final response= await GetConnect().get('${pocketbase.baseURL}/_/');
-    if(response.statusCode != 200) {
+    pocketbase.baseURL =
+        await storage.read(key: LocalStorageHelper.keys.ipServer) ?? '';
+
+    final response = await GetConnect().get('${pocketbase.baseURL}/_/');
+    if (response.statusCode != 200) {
       await storage.delete(key: LocalStorageHelper.keys.ipServer);
-      SnackbarHelper.error(description: 'لقد تم فقدان الاتصال بالجهاز. تأكد من انك على نفس شبكة الجهاز وان الجهاز يعمل.');
+      SnackbarHelper.error(
+          description:
+              'لقد تم فقدان الاتصال بالجهاز. تأكد من انك على نفس شبكة الجهاز وان الجهاز يعمل.');
     }
   }
 }

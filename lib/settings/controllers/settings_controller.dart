@@ -28,7 +28,7 @@ class SettingsController extends GetxController {
     String ip = '';
     await Get.dialog(
       AlertDialog.adaptive(
-        title: Text('الاتصال بجهاز آخر'),
+        title: SelectableText('الاتصال بجهاز آخر'),
         content: Form(
           child: Column(
             children: [
@@ -44,8 +44,7 @@ class SettingsController extends GetxController {
                     if (Form.of(context).validate()) {
                       Form.of(context).save();
                       final url = 'http://$ip:8089';
-                      final response =
-                          await GetConnect().get('$url/_/');
+                      final response = await GetConnect().get('$url/_/');
                       if (response.statusCode != 200) {
                         SnackbarHelper.error(
                             description: 'رقم الجهاز غير موجود');
@@ -54,7 +53,8 @@ class SettingsController extends GetxController {
                       if (context.mounted) {
                         connectedToServer = true;
                         pocketbase().baseURL = url;
-                        await storage.write(key: LocalStorageHelper.keys.ipServer, value: url);
+                        await storage.write(
+                            key: LocalStorageHelper.keys.ipServer, value: url);
                         AppLogger.info(pocketbase().baseURL);
                         SnackbarHelper.success(
                             description: 'تم ربط الجهاز بنجاح');
@@ -79,10 +79,10 @@ class SettingsController extends GetxController {
     update();
   }
 
-  void startServer() async{
+  void startServer() async {
     pocketbaseController.startServer();
     serverStarted = true;
-   ipAddress = pocketbase().baseURL;
-   update();
+    ipAddress = pocketbase().baseURL;
+    update();
   }
 }

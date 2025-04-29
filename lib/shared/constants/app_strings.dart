@@ -8,4 +8,10 @@ abstract class AppStrings {
   static const delete = 'حذف';
 
   static const settings = 'الإعدادات';
+
+  static const company = 'شركة';
+
+  static const companies = 'الشركات';
+
+  static const home = 'الصفحة الرئيسية';
 }
