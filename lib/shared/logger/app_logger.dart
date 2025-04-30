@@ -6,11 +6,11 @@ abstract class AppLogger {
 
   static info(message) => _logger.i(message);
 
-  static exception(message) => _logger.e(message);
+  static exception(message, [StackTrace? trace]) => _logger.e(message, stackTrace: trace);
 
   static warning(message) => _logger.w(message);
 
   static initializeLoggerForFlutterError() => FlutterError.onError = (error) {
-        exception(error.exception);
+        exception(error.exception, error.stack);
       };
 }

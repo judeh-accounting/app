@@ -8,6 +8,7 @@ abstract class SnackbarHelper {
         description,
         colorText: Colors.white,
         backgroundColor: Colors.red,
+        snackPosition: SnackPosition.BOTTOM,
       );
 
   static void success({String title = 'نجاح', required String description}) =>
@@ -16,5 +17,6 @@ abstract class SnackbarHelper {
         description,
         colorText: Colors.white,
         backgroundColor: Colors.green,
+        snackPosition: SnackPosition.BOTTOM,
       );
 }

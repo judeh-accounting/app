@@ -1,38 +1,60 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:judeh_accounting/company/controllers/company_controller.dart';
+import 'package:judeh_accounting/company/models/company.dart';
 import 'package:judeh_accounting/shared/constants/app_strings.dart';
 import 'package:judeh_accounting/shared/widgets/app_scaffold.dart';
+import 'package:judeh_accounting/shared/widgets/app_table.dart';
 
 class CompanyScreen extends StatelessWidget {
   const CompanyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
-      title: AppStrings.company,
-      child: SliverToBoxAdapter(
-        child: DataTable(columns: [DataColumn(label: SelectableText('test column'))],
-          rows: [
-            for(int i = 0; i < 10; i++)
-            DataRow(cells: [ DataCell(SelectableText('test')),])
+    return GetBuilder(
+      init: CompanyController(),
+      builder: (controller) {
+        return AppScaffold(
+          title: AppStrings.company,
+          onCtrlN: () => controller.create(),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Builder(
+                builder: (context) {
+                  controller.context = context;
+                  return ElevatedButton(onPressed:()=> controller.create(), child: Text(AppStrings.add),);
+                }
+              ),
+            ),
           ],
-        ),
-      ),
+          child: SliverToBoxAdapter(
+            child: AppTable(
+              loading: controller.loading,
+              totalPages: controller.totalPages,
+              totalItems: controller.totalItems,
+              page: controller.page,
+              onChangePage: (page) => controller.page = page,
+              columns: [
+                if (kDebugMode) AppColumn(name: 'id'),
+                AppColumn(name: 'name'),
+                AppColumn(name: 'phone'),
+                AppColumn(name: 'description'),
+                AppColumn.actions(),
+              ],
+              data: controller.companies,
+              onGenerateRow: (company) => [
+                if (kDebugMode) company.id,
+                company.name,
+                company.phone ?? '',
+                company.description ?? '',
+              ],
+              onDeleteRow: controller.delete,
+            ),
+          ),
+        );
+      }
     );
   }
-}
-
-class CustomDataTableSource extends DataTableSource{
-  @override
-  DataRow? getRow(int index) {
-    return DataRow(cells: [DataCell(SelectableText('test'))]);
-  }
-
-  @override
-  bool get isRowCountApproximate => true;
-
-  @override
-  int get rowCount => 3;
-
-  @override
-  int get selectedRowCount => 1;
 }

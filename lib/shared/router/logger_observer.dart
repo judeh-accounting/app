@@ -32,6 +32,7 @@ class LoggerObserver extends NavigatorObserver {
 dynamic _extractRouteArgs(Route? route) => route!.settings.arguments;
 
 String? _extractRouteName(Route? route) {
+  AppLogger.info(route?.settings);
   if (route?.settings.name != null) {
     return route!.settings.name;
   }

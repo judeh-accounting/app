@@ -1,9 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide DrawerController;
 import 'package:get/get.dart';
 import 'package:judeh_accounting/pocketbase/controllers/pocketbase_controller.dart';
 import 'package:judeh_accounting/shared/local_storage/local_storage_helper.dart';
 import 'package:judeh_accounting/shared/logger/app_logger.dart';
 import 'package:judeh_accounting/shared/router/app_router.dart';
+
+import 'shared/drawer/drawer_controller.dart';
 
 void main() async {
   AppLogger.initializeLoggerForFlutterError();
@@ -22,19 +24,25 @@ class MyApp extends StatelessWidget {
     return GetBuilder(
         init: PocketbaseController(),
         builder: (_) {
-          return GetMaterialApp(
-            title: 'Judeh Accounting',
-            theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
-              useMaterial3: true,
-            ),
-            getPages: AppRouter.pages,
-            initialRoute: AppRouter.home,
-            navigatorObservers: [
-              AppRouter.loggerObserver,
-            ],
-            debugShowCheckedModeBanner: false,
-            locale: Locale('ar'),
+          return GetBuilder(
+            init: DrawerController(),
+            builder: (_) {
+              return GetMaterialApp(
+                title: 'Judeh Accounting',
+                theme: ThemeData(
+                  colorScheme:
+                      ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
+                  useMaterial3: true,
+                ),
+                getPages: AppRouter.pages,
+                initialRoute: AppRouter.home,
+                navigatorObservers: [
+                  AppRouter.loggerObserver,
+                ],
+                debugShowCheckedModeBanner: false,
+                locale: Locale('ar'),
+              );
+            }
           );
         });
   }
