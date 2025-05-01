@@ -42,6 +42,7 @@ dependencies:
   pocketbase_server_flutter:
       path: ../packages/pocketbase_server_flutter
   qr_flutter: ^4.1.0
+  timeago: ^3.7.0
   window_manager: ^0.4.3
 dev_dependencies:
   flutter_test:

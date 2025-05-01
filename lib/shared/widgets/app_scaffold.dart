@@ -62,7 +62,9 @@ class _AppScaffoldState extends State<AppScaffold> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: IconButton(
-                        onPressed: Get.back, icon: Icon(Icons.close)),
+                      onPressed: Get.back,
+                      icon: Icon(Icons.close),
+                    ),
                   ),
                   SizedBox(height: 25),
                   if (controller.widget != null) controller.widget!,
@@ -92,13 +94,22 @@ class _AppScaffoldState extends State<AppScaffold> {
               Expanded(
                 child: CustomScrollView(
                   slivers: [
-                    SliverAppBar(
-                      title: SelectableText(widget.title),
-                      leading: SizedBox(),
-                      actions: [
-                        SizedBox(),
-                        ...widget.actions,
-                      ],
+                    SliverPadding(
+                      padding: EdgeInsets.all(10),
+                      sliver: SliverToBoxAdapter(
+                        child: Row(
+                          children: [
+                            SelectableText(
+                              widget.title,
+                              style: TextTheme.of(context).titleLarge?.copyWith(
+                                    color: ColorScheme.of(context).primary,
+                                  ),
+                            ),
+                            Spacer(),
+                            ...widget.actions,
+                          ],
+                        ),
+                      ),
                     ),
                     SliverPadding(
                       padding: EdgeInsets.symmetric(horizontal: 10),

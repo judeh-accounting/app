@@ -6,11 +6,16 @@ import 'package:judeh_accounting/shared/logger/app_logger.dart';
 import 'package:judeh_accounting/shared/router/app_router.dart';
 
 import 'shared/drawer/drawer_controller.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   AppLogger.initializeLoggerForFlutterError();
 
   LocalStorageHelper.initFlutterSecureStorage();
+
+  timeago.setLocaleMessages('ar', timeago.ArMessages());
 
   runApp(const MyApp());
 }

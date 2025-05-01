@@ -7,19 +7,25 @@ class Company {
 
   final String? description;
 
-  final DateTime createdAt;
+  final DateTime? createdAt;
 
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
+
+  static const togglableColumns = [
+    'phone',
+    'description',
+    'created',
+    'updated',
+  ];
 
   Company({
     this.id = '',
     required this.name,
     required this.phone,
     required this.description,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-  })  : createdAt = createdAt ?? DateTime.now(),
-        updatedAt = updatedAt ?? DateTime.now();
+    this.createdAt,
+    this.updatedAt,
+  });
 
   Company copyWith({
     String? id,
@@ -50,14 +56,14 @@ class Company {
       name: map['name'] as String,
       phone: map['phone'] as String?,
       description: map['description'] as String?,
-      createdAt: DateTime.parse(map['created'] as String),
-      updatedAt: DateTime.parse(map['updated'] as String),
+      createdAt: DateTime.tryParse(map['created'] as String? ?? ''),
+      updatedAt: DateTime.tryParse(map['updated'] as String? ?? ''),
     );
   }
 
   @override
   String toString() {
-    return 'Company{id: $id, name: $name, phone: $phone, description: $description, createdAt: ${createdAt.toIso8601String()}, updatedAt: ${updatedAt.toIso8601String()}}';
+    return 'Company{id: $id, name: $name, phone: $phone, description: $description, createdAt: ${createdAt?.toIso8601String()}, updatedAt: ${updatedAt?.toIso8601String()}}';
   }
 
   @override

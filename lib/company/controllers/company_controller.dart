@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:judeh_accounting/company/controllers/create_edit_company_controller.dart';
@@ -21,6 +22,24 @@ class CompanyController extends GetxController with HasLoaderMixin {
   int _totalPages = 0;
   int _totalItems = 0;
   int _page = 1;
+  List<String> _columns = [
+    if (kDebugMode) 'id',
+    'name',
+    'phone',
+    'description',
+    'created',
+    // 'updated',
+  ];
+
+  List<String> get columns => _columns;
+  set columns(List<String> columns) {
+    _columns = [
+      if (kDebugMode) 'id',
+      'name',
+      ...columns,
+    ];
+    _loadCompanies();
+  }
 
   int get totalPages => _totalPages;
   int get totalItems => _totalItems;
@@ -56,12 +75,13 @@ class CompanyController extends GetxController with HasLoaderMixin {
   void _loadCompanies() async {
     startLoading();
 
-    final response =
-        await pocketbase().collection(PocketbaseCollections.companies).getList(
-              page: _page,
-              perPage: 10,
-            );
+    AppLogger.info('columns are: ${_columns.join(',')}');
+    final response = await pocketbase()
+        .collection(PocketbaseCollections.companies)
+        .getList(page: _page, perPage: 10, fields: _columns.join(','));
     companies.clear();
+
+    AppLogger.info('pocketbase response: $response');
 
     companies.addAll(response.items.map((e) => Company.fromMap(e.data)));
     _totalPages = response.totalPages;
