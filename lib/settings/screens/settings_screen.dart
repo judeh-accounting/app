@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:judeh_accounting/pocketbase/controllers/pocketbase_controller.dart';
 import 'package:judeh_accounting/settings/controllers/settings_controller.dart';
 import 'package:judeh_accounting/shared/constants/app_strings.dart';
 import 'package:judeh_accounting/shared/widgets/app_scaffold.dart';
@@ -33,27 +32,27 @@ class SettingsScreen extends StatelessWidget {
                             SizedBox(height: 5),
                             ElevatedButton(
                               onPressed: controller.stopServer,
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red),
                               child: SelectableText(
                                 'ايقاف السيرفر',
                                 style: TextTheme.of(context)
                                     .bodyMedium
                                     ?.copyWith(color: Colors.white),
                               ),
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.red),
                             )
                           ],
                         )
                       : ElevatedButton(
                           onPressed: controller.startServer,
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green),
                           child: SelectableText(
                             'تشغيل السيرفر',
                             style: TextTheme.of(context)
                                 .bodyMedium
                                 ?.copyWith(color: Colors.white),
                           ),
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green),
                         ),
                   SizedBox(height: 10),
                   !controller.connectedToServer

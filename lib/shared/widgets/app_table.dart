@@ -16,6 +16,7 @@ class AppTable<T> extends StatelessWidget {
     required this.loading,
     this.onEditRow,
     this.onDeleteRow,
+    this.focusNode,
   });
 
   final List<AppColumn> columns;
@@ -38,64 +39,94 @@ class AppTable<T> extends StatelessWidget {
 
   final Function(T data)? onEditRow;
 
+  final FocusNode? focusNode;
+
   @override
   Widget build(BuildContext context) {
     return loading
         ? AppLoader(
             width: double.infinity,
-            height: double.infinity,
+            height: Get.height,
           )
         : Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               ObxValue(
-                  (selectedIndexes) => DataTable(
-                        showBottomBorder: true,
-                        columns: columns
-                            .map((column) => DataColumn(
-                                label: Text(column.name),
-                                onSort: column.onSort))
-                            .toList(),
-                        rows: data
-                            .map(
-                              (data) => DataRow(
-                                selected: selectedIndexes.contains(data),
-                                onSelectChanged: (value) {
-                                  if (value == null || !value)
-                                    selectedIndexes.remove(data);
-                                  else
-                                    selectedIndexes.add(data);
-                                },
-                                cells: [...onGenerateRow
-                                    .call(data)
-                                    .map(
-                                      (e) => DataCell(
-                                        Text(
-                                          e.length > 50
-                                              ? '${e.substring(0, 50)}...'
-                                              : e,
+                  (selectedIndexes) => Focus(
+                        focusNode: focusNode,
+                        child: DataTable(
+                          showBottomBorder: true,
+                          columns: columns
+                              .map((column) => DataColumn(
+                                  label: Text(column.name),
+                                  onSort: column.onSort))
+                              .toList(),
+                          rows: data
+                              .map(
+                                (data) => DataRow(
+                                  selected: selectedIndexes.contains(data),
+                                  onSelectChanged: (value) {
+                                    if (value == null || !value) {
+                                      selectedIndexes.remove(data);
+                                    } else {
+                                      selectedIndexes.add(data);
+                                    }
+                                  },
+                                  cells: [
+                                    ...onGenerateRow.call(data).map(
+                                          (e) => DataCell(
+                                            Text(
+                                              e.length > 50
+                                                  ? '${e.substring(0, 50)}...'
+                                                  : e,
+                                            ),
+                                          ),
+                                        ),
+                                    if (columns.contains(AppColumn.actions()))
+                                      DataCell(
+                                        PopupMenuButton<_AppColumnActionTypes>(
+                                          itemBuilder: (context) => [
+                                            PopupMenuItem(
+                                              value: _AppColumnActionTypes.edit,
+                                              child: Text(
+                                                AppStrings.edit,
+                                                style: TextTheme.of(context)
+                                                    .bodyMedium
+                                                    ?.copyWith(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .primary),
+                                              ),
+                                            ),
+                                            PopupMenuItem(
+                                              value:
+                                                  _AppColumnActionTypes.delete,
+                                              child: Text(
+                                                AppStrings.delete,
+                                                style: TextTheme.of(context)
+                                                    .bodyMedium
+                                                    ?.copyWith(
+                                                        color: Colors.red),
+                                              ),
+                                            ),
+                                          ],
+                                          onSelected: (value) {
+                                            switch (value) {
+                                              case _AppColumnActionTypes.edit:
+                                                onEditRow?.call(data);
+                                                break;
+                                              case _AppColumnActionTypes.delete:
+                                                onDeleteRow?.call(data);
+                                                break;
+                                            }
+                                          },
                                         ),
                                       ),
-                                    ),
-                                    if(columns.contains(AppColumn.actions()))
-                                      DataCell(PopupMenuButton<_AppColumnActionTypes>(itemBuilder: (context) => [
-                                        PopupMenuItem(child: Text(AppStrings.edit, style: TextTheme.of(context).bodyMedium?.copyWith(color: Theme.of(context).colorScheme.primary),), value: _AppColumnActionTypes.edit,),
-                                        PopupMenuItem(child: Text(AppStrings.delete, style: TextTheme.of(context).bodyMedium?.copyWith(color: Colors.red),), value: _AppColumnActionTypes.delete,),
-                                      ],
-                                      onSelected: (value) {
-                                        switch(value){
-                                          case _AppColumnActionTypes.edit:
-                                            onEditRow?.call(data);
-                                            break;
-                                          case _AppColumnActionTypes.delete:
-                                            onDeleteRow?.call(data);
-                                            break;
-                                        }
-                                      },),),
-                                ],
-                              ),
-                            )
-                            .toList(),
+                                  ],
+                                ),
+                              )
+                              .toList(),
+                        ),
                       ),
                   RxList<T>()),
               SizedBox(height: 15),
@@ -157,12 +188,12 @@ class AppColumn {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is AppColumn && runtimeType == other.runtimeType &&
-              name == other.name;
+      other is AppColumn &&
+          runtimeType == other.runtimeType &&
+          name == other.name;
 
   @override
   int get hashCode => name.hashCode;
-
 }
 
-enum _AppColumnActionTypes{edit, delete}
+enum _AppColumnActionTypes { edit, delete }

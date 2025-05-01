@@ -18,8 +18,8 @@ class Company {
     required this.description,
     DateTime? createdAt,
     DateTime? updatedAt,
-  }): createdAt = createdAt ?? DateTime.now(),
-  updatedAt = updatedAt ?? DateTime.now();
+  })  : createdAt = createdAt ?? DateTime.now(),
+        updatedAt = updatedAt ?? DateTime.now();
 
   Company copyWith({
     String? id,
@@ -37,7 +37,7 @@ class Company {
 
   Map<String, dynamic> toMap() {
     return {
-      if(id.isNotEmpty) 'id': id,
+      if (id.isNotEmpty) 'id': id,
       'name': name,
       'phone': phone,
       'description': description,

@@ -25,25 +25,24 @@ class MyApp extends StatelessWidget {
         init: PocketbaseController(),
         builder: (_) {
           return GetBuilder(
-            init: DrawerController(),
-            builder: (_) {
-              return GetMaterialApp(
-                title: 'Judeh Accounting',
-                theme: ThemeData(
-                  colorScheme:
-                      ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
-                  useMaterial3: true,
-                ),
-                getPages: AppRouter.pages,
-                initialRoute: AppRouter.home,
-                navigatorObservers: [
-                  AppRouter.loggerObserver,
-                ],
-                debugShowCheckedModeBanner: false,
-                locale: Locale('ar'),
-              );
-            }
-          );
+              init: DrawerController(),
+              builder: (_) {
+                return GetMaterialApp(
+                  title: 'Judeh Accounting',
+                  theme: ThemeData(
+                    colorScheme:
+                        ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
+                    useMaterial3: true,
+                  ),
+                  getPages: AppRouter.pages,
+                  initialRoute: AppRouter.home,
+                  navigatorObservers: [
+                    AppRouter.loggerObserver,
+                  ],
+                  debugShowCheckedModeBanner: false,
+                  locale: Locale('ar'),
+                );
+              });
         });
   }
 }

@@ -10,6 +10,7 @@ class AppTextFormField extends StatelessWidget {
     this.required = false,
     this.controller,
     this.maxLines = 1,
+    this.autofocus = false,
   });
 
   final TextInputType? keyboardType;
@@ -26,9 +27,12 @@ class AppTextFormField extends StatelessWidget {
 
   final Function()? onEditingComplete;
 
+  final bool autofocus;
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autofocus: autofocus,
       controller: controller,
       decoration: InputDecoration(
         border: OutlineInputBorder(),

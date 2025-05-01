@@ -6,7 +6,8 @@ abstract class AppLogger {
 
   static info(message) => _logger.i(message);
 
-  static exception(message, [StackTrace? trace]) => _logger.e(message, stackTrace: trace);
+  static exception(message, [StackTrace? trace]) =>
+      _logger.e(message, stackTrace: trace);
 
   static warning(message) => _logger.w(message);
 

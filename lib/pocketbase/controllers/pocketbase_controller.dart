@@ -40,9 +40,10 @@ class PocketbaseController extends GetxController {
       hostName: _localIpAddress = await PocketbaseServerFlutter.localIpAddress,
     );
 
-    if(_localIpAddress != null) {
+    if (_localIpAddress != null) {
       pocketbase.baseURL = 'http://$_localIpAddress:8089';
-      await _storage.write(key: LocalStorageHelper.keys.ipServer, value: pocketbase.baseURL);
+      await _storage.write(
+          key: LocalStorageHelper.keys.ipServer, value: pocketbase.baseURL);
 
       loginAsAdmin();
     }
@@ -54,15 +55,14 @@ class PocketbaseController extends GetxController {
 
   final pocketbase = PocketBase('');
 
-    final _storage = LocalStorageHelper.storage;
+  final _storage = LocalStorageHelper.storage;
   void _loadIpServer() async {
-
     pocketbase.baseURL =
         await _storage.read(key: LocalStorageHelper.keys.ipServer) ?? '';
 
-    try{
+    try {
       await GetConnect().get('${pocketbase.baseURL}/_/');
-    }catch(_){
+    } catch (_) {
       await _storage.delete(key: LocalStorageHelper.keys.ipServer);
       SnackbarHelper.error(
           description:

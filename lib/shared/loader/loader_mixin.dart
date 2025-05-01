@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-mixin HasLoaderMixin on GetxController{
+mixin HasLoaderMixin on GetxController {
   bool loading = false;
 
   void startLoading() {
